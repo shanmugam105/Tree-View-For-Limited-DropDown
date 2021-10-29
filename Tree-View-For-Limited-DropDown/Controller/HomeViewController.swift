@@ -73,7 +73,7 @@ class HomeViewController: UIViewController {
     private func configureChildren(for parent: inout [Parent]) {
         
         for mainGroupItem in techGroup {
-            let parentNew = Parent(expanded: true) {
+            let parentNew = Parent {
                 addChildrenRecursively(subGroup: mainGroupItem, childVar: &childrenForParent)
                 return childrenForParent
             }

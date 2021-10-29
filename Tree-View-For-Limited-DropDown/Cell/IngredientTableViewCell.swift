@@ -10,10 +10,10 @@ import UIKit
 
 class IngredientTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var checkBox: UIImageView!
+    @IBOutlet weak var checkBox1: UIImageView!
+    @IBOutlet weak var checkBox2: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var checkBoxLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var titleLeadingConstraint: NSLayoutConstraint!
     
     func configureView(state: CellState,
                        ingredient: String,
@@ -22,43 +22,36 @@ class IngredientTableViewCell: UITableViewCell {
                        type: CellType? = .CheckBox) {
         switch state {
         case .open:
-            if type != .RadioButton {
-                checkBox.image = #imageLiteral(resourceName: "selected_check")
-            }else{
-                checkBox.image = #imageLiteral(resourceName: "selected_radio")
-            }
+            checkBox1.image = #imageLiteral(resourceName: "down-chevron")
+            checkBox2.image = #imageLiteral(resourceName: "down-chevron")
         case .close:
-            if type != .RadioButton {
-                checkBox.image = #imageLiteral(resourceName: "unselected_check")
-            }else{
-                checkBox.image = #imageLiteral(resourceName: "unselected_radio")
-            }
+            checkBox1.image = #imageLiteral(resourceName: "right-chevron")
+            checkBox2.image = #imageLiteral(resourceName: "right-chevron")
         case .none: break
         }
+        
         var leadingConstant: CGFloat = 0
         
         if spacing == 1 {
-            priceLabel.isHidden = true
-            checkBox.isHidden = true
-            nameLabel.font = .systemFont(ofSize: 16)
-        } else if spacing % 2 == 1 {
-            priceLabel.isHidden = true
-            checkBox.isHidden = true
-            leadingConstant = CGFloat(15 * spacing) - 15
-            nameLabel.font = .systemFont(ofSize: 16)
-            // priceLabel.font = UIFont(name: Constants.OPEN_SANS_LIGHT, size: 16)
+            leadingConstant = CGFloat(15 * spacing) + 15
+            checkBox1.isHidden = false
+            checkBox2.isHidden = true
+        } else if spacing % 2 == 0 {
+            checkBox1.isHidden = true
+            checkBox2.isHidden = false
         } else {
-            priceLabel.isHidden = false
-            checkBox.isHidden = false
-            leadingConstant = CGFloat(15 * spacing)
-            nameLabel.font = .systemFont(ofSize: 16)
-            priceLabel.font = .systemFont(ofSize: 16)
+            checkBox1.isHidden = false
+            checkBox2.isHidden = true
+            
+            checkBox1.image = #imageLiteral(resourceName: "trash")
         }
-        checkBox.image = checkBox.image?.withRenderingMode(.alwaysTemplate)
-        checkBox.tintColor = .link
+        checkBox2.image = checkBox2.image?.withRenderingMode(.alwaysTemplate)
+        checkBox2.tintColor = .link
+        checkBox1.image = checkBox1.image?.withRenderingMode(.alwaysTemplate)
+        checkBox1.tintColor = .link
         nameLabel.text = ingredient.capitalized
-        priceLabel.text = "$" + " " + price
+        nameLabel.font = .systemFont(ofSize: 16)
         selectionStyle = .none
-        checkBoxLeadingConstraint.constant = leadingConstant - 15
+        titleLeadingConstraint.constant = CGFloat(15 * spacing) - leadingConstant
     }
 }

@@ -360,7 +360,7 @@ import UIKit
         var indices = node.index.components(separatedBy: ".")
         var expansion: ExpansionOption = .none
         
-        if indices.count == 1 { return nil }
+        // if indices.count == 1 { return nil }
         /*
          
          This works based on . (point) system. if I'm receiving selected index 2 indicates, 3rd row tapped. If I'm receiving 2.0 indicates 0th child in 3rd row tapped. and if I'm receiving 1.2.1 indicates 2nd row -> 3rd child -> 2nd subchild tapped.
