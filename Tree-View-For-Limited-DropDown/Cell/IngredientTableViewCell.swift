@@ -33,17 +33,17 @@ class IngredientTableViewCell: UITableViewCell {
         var leadingConstant: CGFloat = 0
         
         if spacing == 1 {
-            leadingConstant = CGFloat(15 * spacing) + 15
+            leadingConstant = 30
             checkBox1.isHidden = false
             checkBox2.isHidden = true
-        } else if spacing % 2 == 0 {
+        } else if spacing == 4 {
+            leadingConstant = 15
+            checkBox1.isHidden = false
+            checkBox2.isHidden = true
+            checkBox1.image = #imageLiteral(resourceName: "trash")
+        } else {
             checkBox1.isHidden = true
             checkBox2.isHidden = false
-        } else {
-            checkBox1.isHidden = false
-            checkBox2.isHidden = true
-            
-            checkBox1.image = #imageLiteral(resourceName: "trash")
         }
         checkBox2.image = checkBox2.image?.withRenderingMode(.alwaysTemplate)
         checkBox2.tintColor = .link
