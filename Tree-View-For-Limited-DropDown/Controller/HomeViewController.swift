@@ -15,7 +15,7 @@ enum CellType {
 struct TechGroup {
     let id: Int
     let title: String
-    let subGroup: [TechGroup]?
+    var subGroup: [TechGroup]?
 }
 
 class HomeViewController: UIViewController {
@@ -25,8 +25,14 @@ class HomeViewController: UIViewController {
     private var ingredientTreeInstance: KJTree = KJTree()
     private var childrenForParent = [Child]()
     
+    // Temp
+    private var meetingArray    = ["Jan", "Feb", "Mar", "Apr", "May"]
+    private var fileArray1      = ["Sun", "Mon", "Tue", "Wed", "Water"]
+    private var contentArray    = ["Jun", "Jul", "Aug"]
+    private var fileArray2      = ["Thu", "Fri", "Sat", "Fire"]
+    
     // Here Parent is Android Group
-    let techGroup: [TechGroup] = [TechGroup(id: 0,
+    /* var techGroup: [TechGroup] = [TechGroup(id: 0,
                                             title: "Android Group",
                                             subGroup: [TechGroup(id: 1,
                                                                  title: "Meetings",
@@ -53,17 +59,42 @@ class HomeViewController: UIViewController {
                                                                                       subGroup: nil),
                                                                             TechGroup(id: 6,
                                                                                       title: "Feb",
-                                                                                      subGroup: nil)])])]
-
+                                                                                      subGroup: nil)])])] */
+    var techGroup: [TechGroup] = []
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let ingredientCellNib = UINib(nibName: "IngredientTableViewCell", bundle: nil)
         tableView.register(ingredientCellNib, forCellReuseIdentifier: "IngredientTableViewCell")
+        // MARK:- Dynamic data will be added
+        makeDynamicData()
         configureChildren(for: &parentTree)
         self.ingredientTreeInstance = KJTree(Parents: self.parentTree)
         tableView.reloadData()
+    }
+    
+    private func makeDynamicData() {
+        techGroup.removeAll()
+        var androidGroup = TechGroup(id: 0, title: "Android Group", subGroup: nil)
+        let mainSubTechGroups1: [TechGroup]? = parseArrayDynamically(array1: meetingArray, array2: fileArray1)
+        let mainSubTechGroups2: [TechGroup]? = parseArrayDynamically(array1: contentArray, array2: fileArray2)
+        
+        androidGroup.subGroup = [ TechGroup(id: 0, title: "Meeting", subGroup: mainSubTechGroups1),
+                                  TechGroup(id: 0, title: "Content", subGroup: mainSubTechGroups2)]
+        techGroup.append(androidGroup)
+    }
+    
+    private func parseArrayDynamically(array1: [String], array2: [String]) -> [TechGroup]? {
+        var mainSubTechGroups1: [TechGroup]? = []
+        for meeting in array1 {
+            var childSubGroups: [TechGroup]? = []
+            for meetingDay in array2 {
+                childSubGroups?.append(TechGroup(id: 0, title: meetingDay, subGroup: nil))
+            }
+            mainSubTechGroups1?.append(TechGroup(id: 0, title: meeting, subGroup: childSubGroups))
+        }
+        return mainSubTechGroups1
     }
     
     private func configureChildren(for parent: inout [Parent]) {
